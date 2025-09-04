@@ -128,9 +128,6 @@ function sortMoves (moves) {
     return moves;
 }
 
-// const r = getMoves('Queen', 'E4');
-// console.log(r);
-
 const args = process.argv.slice(2);
 
 const piece = args[0];
