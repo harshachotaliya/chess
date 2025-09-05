@@ -65,7 +65,14 @@ function moveDigonalLeftUpward (currentRow, currentColumn, steps) {
     return moves;
 }
 
-
+/**
+ *
+ * @param {"King|Queen|Pawn"} piece - Chess pieces
+ * @param {string} position - Cell number on the chessboard
+ * @returns {string} List of possible cells in which the chess piece can move from its current position.
+ * @throws {Error} If the input position or piece is invalid.
+ *
+ */
 function getMoves (piece, position) {
     let [column, row] = position.split("");
     column = column.toUpperCase();
@@ -115,6 +122,13 @@ function getMoves (piece, position) {
     }
 }
 
+/**
+ * Sorts a list of chess moves.
+ *
+ * @param {string[]} moves - Array of moves
+ * @returns {string[]} Sorted array of moves
+ *
+ */
 function sortMoves (moves) {
     moves.sort((a, b) => {
     const [colA, rowA] = [a[0], Number(a.slice(1))];
@@ -138,7 +152,7 @@ const position = args[1];
 
 try {
   const moves = getMoves(piece, position);
-  console.log(`Possible moves for ${piece} at ${position}:`);
+  console.log(`Possible cells for ${piece} at ${position}:`);
   console.log(moves.join(", "));
 } catch (err) {
   console.error("Error:", err.message);
