@@ -65,51 +65,51 @@ function moveDigonalLeftUpward (currentRow, currentColumn, steps) {
     return moves;
 }
 
+
 function getMoves (piece, position) {
     let [column, row] = position.split("");
+    column = column.toUpperCase();
+    row = Number(row);
     const columnIndex = cols.indexOf(column);
     if (row < 1 || row > 8 || columnIndex === -1) {
-        console.error("Invalid position"); 
-        return;
+        throw new Error("Please input valid position");
     }
     if (! (['King', 'Queen', 'Pawn'].includes(piece)))  {
-        console.error("Invalid piece");
-        return;
+        throw new Error("Please input valid piece");
     }
     
     let result;
 
     switch (piece) {  
         case 'King' : 
-        console.log('inside king')
             result = [
-                ... moveLeft(Number(row), columnIndex, 1),
-                ... moveRight(Number(row), columnIndex, 1),
-                ... moveUpward(Number(row), column, 1),
-                ... moveDownward(Number(row), column, 1),
-                ... moveDigonalRightDownward(Number(row), columnIndex, 1),
-                ... moveDigonalLeftDownward(Number(row), columnIndex, 1),
-                ... moveDigonalRightUpward(Number(row), columnIndex, 1),
-                ... moveDigonalLeftUpward(Number(row), columnIndex, 1),
+                ... moveLeft(row, columnIndex, 1),
+                ... moveRight(row, columnIndex, 1),
+                ... moveUpward(row, column, 1),
+                ... moveDownward(row, column, 1),
+                ... moveDigonalRightDownward(row, columnIndex, 1),
+                ... moveDigonalLeftDownward(row, columnIndex, 1),
+                ... moveDigonalRightUpward(row, columnIndex, 1),
+                ... moveDigonalLeftUpward(row, columnIndex, 1),
             ]
             return result;   
         
         case 'Queen' : 
             result = [
-                ... moveLeft(Number(row), columnIndex, 7),
-                ... moveRight(Number(row), columnIndex, 7),
-                ... moveDownward(Number(row), column, 7),
-                ... moveUpward(Number(row), column, 7),
-                ... moveDigonalRightDownward(Number(row), columnIndex, 7),
-                ... moveDigonalLeftDownward(Number(row), columnIndex, 7),
-                ... moveDigonalRightUpward(Number(row), columnIndex, 7),
-                ... moveDigonalLeftUpward(Number(row), columnIndex, 7),
+                ... moveLeft(row, columnIndex, 7),
+                ... moveRight(row, columnIndex, 7),
+                ... moveDownward(row, column, 7),
+                ... moveUpward(row, column, 7),
+                ... moveDigonalRightDownward(row, columnIndex, 7),
+                ... moveDigonalLeftDownward(row, columnIndex, 7),
+                ... moveDigonalRightUpward(row, columnIndex, 7),
+                ... moveDigonalLeftUpward(row, columnIndex, 7),
             ];
             return result; 
 
         case 'Pawn' : 
             result = [
-                ... moveUpward(Number(row), column, 1),
+                ... moveUpward(row, column, 1),
             ]
             return result;
     }
@@ -129,8 +129,17 @@ function sortMoves (moves) {
 }
 
 const args = process.argv.slice(2);
-
+if (args.length < 2) {
+  console.log("Usage: node chess.js <Piece> <Position> OR docker run --rm chess <Piece> <Position>");
+  process.exit(1);
+}
 const piece = args[0];
 const position = args[1];
-const moves = getMoves(piece, position);
-console.log(moves);
+
+try {
+  const moves = getMoves(piece, position);
+  console.log(`Possible moves for ${piece} at ${position}:`);
+  console.log(moves.join(", "));
+} catch (err) {
+  console.error("Error:", err.message);
+}
